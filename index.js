@@ -3,9 +3,11 @@ const mongoose = require('mongoose');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 const bodyParser = require('body-parser');
-require('./modals/User');
-require('./services/passport');
 const keys = require('./config/keys');
+require('./modals/User');
+require('./modals/Survey');
+require('./services/passport');
+mongoose.Promise = global.Promise;
 mongoose.connect(keys.mangoURI);
 const app = express();
 app.use(bodyParser.json());
@@ -19,6 +21,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 require('./routes/authRoutes')(app);
 require('./routes/billingRoutes')(app);
+require('./routes/surveyRoutes')(app);
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
   const path = require('path');
@@ -27,4 +30,5 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 const PORT = process.env.PORT || 5000;
+
 app.listen(PORT);
