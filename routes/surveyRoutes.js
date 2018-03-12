@@ -18,6 +18,7 @@ module.exports = app => {
     res.send('thanks for voting!');
   });
   app.post('/api/surveys/webhooks', (req, res) => {
+    console.log(req.body);
     const p = new Path('/api/surveys/:surveyId/:choice');
     _.chain(req.body)
       .map(({ email, url }) => {
